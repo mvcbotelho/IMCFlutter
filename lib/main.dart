@@ -11,6 +11,24 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  TextEditingController weightController = TextEditingController();
+  TextEditingController heightController = TextEditingController();
+
+  String _infoText = 'Informe seus dados';
+
+  void _resetButton() {
+    weightController.text = '';
+    heightController.text = '';
+    _infoText = 'Informe seus dados';
+  }
+
+  void _calculate() {
+    double weight = double.parse(weightController.text);
+    double height = double.parse(heightController.text) / 100;
+    double imc = weight / (height * height);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +42,7 @@ class _HomeState extends State<Home> {
                 Icons.refresh,
                 color: Colors.white,
               ),
-              onPressed: () {
-                print('Clicou no icone!!!');
-              },
+              onPressed: _resetButton,
             )
           ],
         ),
@@ -48,6 +64,7 @@ class _HomeState extends State<Home> {
                     labelStyle: TextStyle(color: Colors.green)),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.green, fontSize: 25.0),
+                controller: weightController,
               ),
               TextField(
                 keyboardType: TextInputType.number,
@@ -56,15 +73,14 @@ class _HomeState extends State<Home> {
                     labelStyle: TextStyle(color: Colors.green)),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.green, fontSize: 25.0),
+                controller: heightController,
               ),
               Padding(
                 padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
                 child: Container(
                   height: 60.0,
                   child: RaisedButton(
-                    onPressed: () {
-                      print('Calcular imc');
-                    },
+                    onPressed: _calculate,
                     child: Text(
                       'Calcular',
                       style: TextStyle(color: Colors.white, fontSize: 25.0),
@@ -74,7 +90,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Text(
-                'Info',
+                _infoText,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.green, fontSize: 25.0),
               )
